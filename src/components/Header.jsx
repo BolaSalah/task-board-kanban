@@ -1,34 +1,8 @@
 import React from 'react'
-import { Box, CircularProgress, InputAdornment, TextField, Typography } from '@mui/material'
+import { Box, InputAdornment, TextField, Typography } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
-import { useQuery } from '@tanstack/react-query'
-import { getTasks } from '../services/taskService';
 
-const Header = () => {
-
-    const { data: tasks = [], isLoading, isError } = useQuery({
-        queryKey: ['tasks'],
-        queryFn: getTasks,
-    })
-
-    if (isLoading) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: "#f4f6f8" }}>
-                <CircularProgress />
-            </Box>
-        )
-    }
-
-    if (isError) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: "#f4f6f8" }}>
-                <Typography color="error">
-                    Error loading tasks. Make sure json-server is running on port 4000!
-                </Typography>
-            </Box>
-        )
-    }
-
+const Header = ({ tasksCount }) => {
 
     return (
         <Box sx={{
@@ -82,7 +56,7 @@ const Header = () => {
                     </Typography>
                     {/* Length of tasks */}
                     <Typography variant="caption" sx={{ color: '#8c8c8c', fontWeight: '700' }}>
-                        {tasks.length} {tasks.length === 1 ? "task" : "tasks"}
+                        {tasksCount} {tasksCount === 1 ? "task" : "tasks"}
                     </Typography>
                 </Box>
             </Box>
