@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 const Board = ({ tasks = [] }) => {
 
+    // Get real-time search term from Redux store
     const searchTerm = useSelector((state) => state.search.searchTerm);
 
     const columnTitles = [
@@ -19,6 +20,7 @@ const Board = ({ tasks = [] }) => {
             <Grid container spacing={3}>
                 {columnTitles.map((col, index) => {
 
+                    // Filter tasks by column key and search keyword
                     const filterdTaskes = tasks.filter(task => {
 
                         const isInColumn = task.column.toLowerCase() === col.key.toLowerCase()

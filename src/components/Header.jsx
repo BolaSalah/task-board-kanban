@@ -18,7 +18,7 @@ const Header = ({ tasksCount }) => {
         }}
         >
             {/* Left side: Logo, title and Length of tasks */}
-            <Box sx={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 {/* Logo */}
                 {/* <Box
                     sx={{
@@ -54,9 +54,9 @@ const Header = ({ tasksCount }) => {
                 </Box>
 
                 {/* title and Length of tasks */}
-                <Box>
+                <Box sx={{ display: "flex", flexDirection: "column",gap:"2px" }}>
                     {/* title  */}
-                    <Typography variant="subtitle1" sx={{ fontWeight: '700', lineHeight: 1.2, color: '#1f1f1f' }}>
+                    <Typography variant="subtitle1" sx={{ fontWeight: '700', lineHeight: 1, color: '#1f1f1f' }}>
                         KANBAN BOARD
                     </Typography>
                     {/* Length of tasks */}

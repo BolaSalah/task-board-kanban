@@ -1,15 +1,23 @@
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
 import highlightText from '../../utils/highlightText';
+import { useTasks } from '../../hooks/useTasks';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Column = ({ title, tasks = [] }) => {
 
     const searchTerm = useSelector((state) => state.search.searchTerm);
 
+    const { deleteTask, createTask } = useTasks()
+
     const [visibleCount, setVisibleCount] = useState(3);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+    // to create new task
+    const [isAdding, setIsAdding] = useState(false);
+    const [newTask, setNewTask] = useState({ title: '', description: '', priorty: 'LOW' });
 
     const { ref, inView } = useInView({
         threshold: 0,
@@ -49,12 +57,34 @@ const Column = ({ title, tasks = [] }) => {
                 return { bgcolor: '#fff1f0', color: "#f5222d" };
             case "MEDIUM":
                 return { bgcolor: '#fff7e6', color: "#fa8c16" };
-            case "low":
+            case "LOW":
                 return { bgcolor: '#f6ffed', color: "#52c41a" };
             default:
                 return { bgcolor: '#f5f5f5', color: "#8c8c8c" };
         }
     }
+
+    const handleSaveTask = () => {
+        if (!newTask.title.trim()) return;
+
+        let columnValue = title.toLowerCase().replace(" ", "_");
+
+        if (columnValue == "to_do") {
+            columnValue = "backlog";
+        }
+        if (columnValue == "in_review") {
+            columnValue = "review";
+        }
+        createTask({
+            ...newTask,
+            column: columnValue
+        }, {
+            onSuccess: () => {
+                setIsAdding(false);
+                setNewTask({ title: '', description: '', priorty: 'LOW' });
+            }
+        });
+    };
 
     return (
         <Box
@@ -83,8 +113,6 @@ const Column = ({ title, tasks = [] }) => {
 
                 <Box
                     sx={{
-                        // width: 8,
-                        // height: 8,
                         ml: "10px",
                         paddingBlock: "2px",
                         paddingInline: "8px",
@@ -100,11 +128,20 @@ const Column = ({ title, tasks = [] }) => {
                     <Box
                         key={task.id}
                         sx={{
-                            bgcolor: "white", borderRadius: "8px", p: 2,
+                            bgcolor: "white", borderRadius: "8px", p: 2, position: "relative",
                             boxShadow: "0px 1px 2px rgba(0,0,0,0.05)", border: "1px solid #e8e8e8",
                             display: "flex", flexDirection: "column", gap: "10px"
                         }}
                     >
+                        <Box sx={{ position: "absolute", top: 8, right: 8 }}>
+                            <IconButton
+                                size="small"
+                                onClick={() => deleteTask(task.id)}
+                                sx={{ color: "#f5222d" }}
+                            >
+                                <DeleteIcon fontSize="small" />
+                            </IconButton>
+                        </Box>
                         <Typography variant="body2" sx={{ fontWeight: "700" }}>
                             {highlightText(task.title, searchTerm)}
                         </Typography>
@@ -138,6 +175,54 @@ const Column = ({ title, tasks = [] }) => {
                                 />
                             </Box>
                         )}
+                    </Box>
+                )}
+                {!isAdding ? (
+                    <Button
+                        fullWidth
+                        variant="outlined"
+                        onClick={() => setIsAdding(true)}
+                        sx={{ borderStyle: 'dashed', color: '#595959', borderColor: '#d9d9d9' }}
+                    >
+                        + Add Task
+                    </Button>
+                ) : (
+                    <Box sx={{ bgcolor: "white", borderRadius: "8px", p: 2, border: "1px solid #d9d9d9", display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                        <TextField
+                            size="small"
+                            placeholder="Task title..."
+                            value={newTask.title}
+                            onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+                            fullWidth
+                            autoFocus
+                        />
+                        <TextField
+                            size="small"
+                            placeholder="Description..."
+                            value={newTask.description}
+                            onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
+                            fullWidth
+                            multiline
+                            rows={2}
+                        />
+
+                        <FormControl size="small" fullWidth>
+                            <InputLabel>Priority</InputLabel>
+                            <Select
+                                value={newTask.priorty}
+                                label="Priority"
+                                onChange={(e) => setNewTask({ ...newTask, priorty: e.target.value })}
+                            >
+                                <MenuItem value="HIGH">High</MenuItem>
+                                <MenuItem value="MEDIUM">Medium</MenuItem>
+                                <MenuItem value="LOW">Low</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+                            <Button size="small" color="inherit" onClick={() => setIsAdding(false)}>Cancel</Button>
+                            <Button size="small" variant="contained" color="primary" onClick={handleSaveTask}>Save</Button>
+                        </Box>
                     </Box>
                 )}
             </Box>
