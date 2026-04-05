@@ -32,33 +32,29 @@ const App = () => {
 
 
   return (
-    <>
+    // Main Container 
+    <Box
+      sx={{ bgcolor: "#f4f6f8", minHeight: "100vh" }}
+    >
 
-      {/* Main Container */}
+      {/* Header component */}
       <Box
-        sx={{ bgcolor: "#f4f6f8", minHeight: "100vh" }}
+        sx={{ padding: "20px" }}
       >
-
-        {/* Header component */}
-        <Box
-          sx={{ padding: "20px" }}
-        >
-          <Header tasksCount={tasks.length} />
-        </Box>
-
-        {/* Sepration Line below the Header */}
-        <Box sx={{ height: "1px", bgcolor: "#d9d9d9", width: "100%" }}></Box>
-
-        {/* Tasks */}
-        <Box
-          sx={{ padding: "20px" }}
-        >
-          <Board tasks={tasks} />
-        </Box>
-
+        <Header tasksCount={tasks.length} />
       </Box>
 
-    </>
+      {/* Sepration Line below the Header */}
+      <Box sx={{ height: "1px", bgcolor: "#d9d9d9", width: "100%" }}></Box>
+
+      {/* Tasks */}
+      <Box
+        sx={{ padding: "20px" }}
+      >
+        <Board tasks={tasks} />
+      </Box>
+
+    </Box>
   )
 }
 

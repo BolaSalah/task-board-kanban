@@ -1,7 +1,28 @@
-import { Box, Typography } from '@mui/material';
-import React from 'react'
+import { Box, CircularProgress, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react'
+import { useInView } from 'react-intersection-observer';
 
 const Column = ({ title, tasks = [] }) => {
+
+    const [visibleCount, setVisibleCount] = useState(3);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+    const { ref, inView } = useInView({
+        threshold: 0,
+    });
+
+    useEffect(() => {
+        if (inView && visibleCount < tasks.length) {
+            setIsLoadingMore(true);
+
+            setTimeout(() => {
+                setVisibleCount((prev) => prev + 2);
+                setIsLoadingMore(false);
+            }, 1000);
+        }
+    }, [inView, tasks.length, visibleCount]);
+
+    const displayedTasks = tasks.slice(0, visibleCount);
 
     const getDotColor = (columnTitle) => {
         switch (columnTitle) {
@@ -71,7 +92,7 @@ const Column = ({ title, tasks = [] }) => {
                 </Box>
             </Typography>
             <Box sx={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                {tasks.map((task) => (
+                {displayedTasks.map((task) => (
                     <Box
                         key={task.id}
                         sx={{
@@ -100,6 +121,21 @@ const Column = ({ title, tasks = [] }) => {
                         </Box>
                     </Box>
                 ))}
+                {visibleCount < tasks.length && (
+                    <Box ref={ref} sx={{ display: 'flex', justifyContent: 'center', p: 1, mt: 1 }}>
+                        {isLoadingMore && (
+                            <Box sx={{ display: "flex", flexDirection: "column", justifyItems: "center", alignItems: "center", gap: "10px" }}>
+                                <Typography variant="caption" sx={{ color: '#8c8c8c', fontWeight: '700' }}>
+                                    Loading more tasks...
+                                </Typography>
+                                <CircularProgress
+                                    size={20}
+                                    sx={{ color: '#fa8c16' }}
+                                />
+                            </Box>
+                        )}
+                    </Box>
+                )}
             </Box>
         </Box>
     )

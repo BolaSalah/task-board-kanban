@@ -25,8 +25,57 @@
             "id": "4",
             "title": "Design system tokens",
             "description": "Set up palette, typography, and spacing scales",
+            "priorty": "MEDIUM",
+            "column": "done"
+        },
+        {
+            "id": "5",
+            "title": "title example 5",
+            "description": "description example 5",
             "priorty": "HIGH",
             "column": "done"
+        },
+        {
+            "id": "6",
+            "title": "title example 6",
+            "description": "description example 6",
+            "priorty": "LOW",
+            "column": "done"
+        },
+        {
+            "id": "7",
+            "title": "title example 7",
+            "description": "description example 7",
+            "priorty": "MEDIUM",
+            "column": "done"
+        },
+        {
+            "id": "8",
+            "title": "title example 8",
+            "description": "description example 8",
+            "priorty": "HIGH",
+            "column": "done"
+        },
+        {
+            "id": "9",
+            "title": "title example 9",
+            "description": "description example 9",
+            "priorty": "LOW",
+            "column": "done"
+        },
+        {
+            "id": "10",
+            "title": "title example 10",
+            "description": "description example 10",
+            "priorty": "HIGH",
+            "column": "done"
+        },
+        {
+            "id": "11",
+            "title": "title example 11",
+            "description": "description example 11",
+            "priorty": "LOW",
+            "column": "backlog"
         }
     ]
 }
