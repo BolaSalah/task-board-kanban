@@ -1,8 +1,12 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer';
+import { useSelector } from 'react-redux';
+import highlightText from '../../utils/highlightText';
 
 const Column = ({ title, tasks = [] }) => {
+
+    const searchTerm = useSelector((state) => state.search.searchTerm);
 
     const [visibleCount, setVisibleCount] = useState(3);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -102,10 +106,10 @@ const Column = ({ title, tasks = [] }) => {
                         }}
                     >
                         <Typography variant="body2" sx={{ fontWeight: "700" }}>
-                            {task.title}
+                            {highlightText(task.title, searchTerm)}
                         </Typography>
                         <Typography variant="caption" sx={{ lineHeight: 1.8, display: "block", color: "#635e5e" }}>
-                            {task.description}
+                            {highlightText(task.description, searchTerm)}
                         </Typography>
                         <Box sx={{ display: "flex", mt: "2px" }}>
                             <Box

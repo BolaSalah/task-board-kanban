@@ -1,8 +1,11 @@
 import { Box, Grid } from '@mui/material'
 import React from 'react'
 import Column from './Column'
+import { useSelector } from 'react-redux';
 
 const Board = ({ tasks = [] }) => {
+
+    const searchTerm = useSelector((state) => state.search.searchTerm);
 
     const columnTitles = [
         { title: "TO DO", key: "backlog" },
@@ -16,7 +19,16 @@ const Board = ({ tasks = [] }) => {
             <Grid container spacing={3}>
                 {columnTitles.map((col, index) => {
 
-                    const filterdTaskes = tasks.filter(task => task.column.toLowerCase() === col.key.toLowerCase());
+                    const filterdTaskes = tasks.filter(task => {
+
+                        const isInColumn = task.column.toLowerCase() === col.key.toLowerCase()
+                        const normalizedSearch = searchTerm.toLowerCase();
+
+                        const matchSearch = task.title.toLowerCase().includes(normalizedSearch) || task.description.toLowerCase().includes(normalizedSearch)
+
+                        return isInColumn && matchSearch
+
+                    });
                     return (
                         <Grid key={index} size={{ xs: 12, md: 3 }}>
                             <Column title={col.title} tasks={filterdTaskes} />

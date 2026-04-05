@@ -1,8 +1,13 @@
 import React from 'react'
 import { Box, InputAdornment, TextField, Typography } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSearchTerm } from '../store/searchSlice';
 
 const Header = ({ tasksCount }) => {
+
+    const dispatch = useDispatch();
+    const searchTerm = useSelector((state) => state.search.searchTerm);
 
     return (
         <Box sx={{
@@ -63,6 +68,10 @@ const Header = ({ tasksCount }) => {
 
             {/* Right side:Search Bar */}
             <TextField
+
+                value={searchTerm}
+                onChange={(e) => dispatch(setSearchTerm(e.target.value))}
+
                 variant="outlined"
                 size="small"
                 placeholder="Search tasks..."
