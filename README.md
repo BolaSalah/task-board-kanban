@@ -38,7 +38,7 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
 ### 2️⃣ Clone the Repository
 ```bash
 git clone https://github.com/BolaSalah/task-board-kanban.git
-cd task-board-kanban
+cd task-board
 ```
 
 ### 3️⃣ Install Dependencies
