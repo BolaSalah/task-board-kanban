@@ -13,7 +13,7 @@ A modern and interactive Kanban board built with **React**, **Redux Toolkit**, a
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="/screenshots/kanban-board.png" alt="Kanban Board" width="700"/>
+  <img src="https://raw.githubusercontent.com/BolaSalah/task-board-kanban/main/public/screenshots/kanban-board.png" width="700"/>
 </p>
 
 ---
