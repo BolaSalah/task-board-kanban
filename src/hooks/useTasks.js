@@ -25,8 +25,21 @@ export const useTasks = () => {
         },
     })
 
+    const updateTask = useMutation({
+        mutationFn: async ({ id, column }) => {
+            const response = await api.patch(`/tasks/${id}`, {
+                column,
+            });
+            return response.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['tasks'] });
+        },
+    });
+
     return {
         deleteTask: deleteTask.mutate,
-        createTask: createTask.mutate
+        createTask: createTask.mutate,
+        updateTask: updateTask.mutate,
     }
 }

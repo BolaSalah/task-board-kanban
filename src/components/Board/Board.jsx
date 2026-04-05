@@ -2,6 +2,7 @@ import { Box, Grid } from '@mui/material'
 import React from 'react'
 import Column from './Column'
 import { useSelector } from 'react-redux';
+import { Droppable } from "@hello-pangea/dnd";
 
 const Board = ({ tasks = [] }) => {
 
@@ -16,8 +17,8 @@ const Board = ({ tasks = [] }) => {
     ]
 
     return (
-        <Box sx={{ padding: "10px" }}>
-            <Grid container spacing={3}>
+        <Box sx={{ padding: "10px", width: "100%" }}>
+            <Grid container spacing={3} sx={{ height: "100%" }}>
                 {columnTitles.map((col, index) => {
 
                     // Filter tasks by column key and search keyword
@@ -32,8 +33,25 @@ const Board = ({ tasks = [] }) => {
 
                     });
                     return (
-                        <Grid key={index} size={{ xs: 12, md: 3 }}>
-                            <Column title={col.title} tasks={filterdTaskes} />
+                        <Grid key={index} size={{ xs: 12, md: 3 }} sx={{ display: "flex" }} >
+                            {/* <Column title={col.title} tasks={filterdTaskes} /> */}
+                            <Droppable droppableId={col.key}>
+                                {(provided) => (
+                                    <Box
+                                        ref={provided.innerRef}
+                                        {...provided.droppableProps}
+                                        sx={{
+                                            minWidth: "100%"
+                                        }}
+                                    >
+                                        <Column
+                                            title={col.title}
+                                            tasks={filterdTaskes}
+                                        />
+                                        {provided.placeholder}
+                                    </Box>
+                                )}
+                            </Droppable>
                         </Grid>
                     )
                 })}

@@ -4,6 +4,8 @@ import { Box, CircularProgress, Typography } from '@mui/material'
 import Board from './components/Board/Board'
 import { getTasks } from './services/taskService'
 import { useQuery } from '@tanstack/react-query'
+import { DragDropContext } from "@hello-pangea/dnd";
+import { useTasks } from './hooks/useTasks'
 
 const App = () => {
 
@@ -11,6 +13,7 @@ const App = () => {
     queryKey: ['tasks'],
     queryFn: getTasks,
   })
+  const { updateTask } = useTasks();
 
   if (isLoading) {
     return (
@@ -30,11 +33,26 @@ const App = () => {
     )
   }
 
+  const onDragEnd = (result) => {
+    const { destination, source, draggableId } = result;
+
+    if (!destination) return;
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) return;
+
+    updateTask({
+      id: draggableId,
+      column: destination.droppableId
+    });
+  };
 
   return (
     // Main Container 
     <Box
-      sx={{ bgcolor: "#f4f6f8", minHeight: "100vh" }}
+      sx={{ bgcolor: "#f4f6f8", minHeight: "100vh",display:"flex",flexDirection:"column" }}
     >
 
       {/* Header component */}
@@ -48,11 +66,13 @@ const App = () => {
       <Box sx={{ height: "1px", bgcolor: "#d9d9d9", width: "100%" }}></Box>
 
       {/* Tasks */}
-      <Box
-        sx={{ padding: "20px" }}
-      >
-        <Board tasks={tasks} />
-      </Box>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Box
+          sx={{ padding: "20px", flex: 1, display: "flex" }}
+        >
+          <Board tasks={tasks} />
+        </Box>
+      </DragDropContext>
 
     </Box>
   )

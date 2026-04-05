@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import highlightText from '../../utils/highlightText';
 import { useTasks } from '../../hooks/useTasks';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Draggable } from "@hello-pangea/dnd";
 
 const Column = ({ title, tasks = [] }) => {
 
@@ -88,7 +89,10 @@ const Column = ({ title, tasks = [] }) => {
 
     return (
         <Box
-            sx={{ bgcolor: "#e9ebec", borderRadius: "12px", p: 2, boxShadow: "0px 1px 3px rgba(0,0,0,0.02)", height: "100%" }}
+            sx={{
+                bgcolor: "#e9ebec", borderRadius: "12px", p: 2, boxShadow: "0px 1px 3px rgba(0,0,0,0.02)",
+                height: "100%",
+            }}
         >
             <Typography
                 variant="subtitle2"
@@ -123,44 +127,60 @@ const Column = ({ title, tasks = [] }) => {
                     {tasks.length}
                 </Box>
             </Typography>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                {displayedTasks.map((task) => (
-                    <Box
+            <Box sx={{ display: "flex", flexDirection: "column", gap: "12px",flex: 1 }}>
+                {displayedTasks.map((task, index) => (
+                    <Draggable
                         key={task.id}
-                        sx={{
-                            bgcolor: "white", borderRadius: "8px", p: 2, position: "relative",
-                            boxShadow: "0px 1px 2px rgba(0,0,0,0.05)", border: "1px solid #e8e8e8",
-                            display: "flex", flexDirection: "column", gap: "10px"
-                        }}
+                        draggableId={String(task.id)}
+                        index={index}
                     >
-                        <Box sx={{ position: "absolute", top: 8, right: 8 }}>
-                            <IconButton
-                                size="small"
-                                onClick={() => deleteTask(task.id)}
-                                sx={{ color: "#f5222d" }}
-                            >
-                                <DeleteIcon fontSize="small" />
-                            </IconButton>
-                        </Box>
-                        <Typography variant="body2" sx={{ fontWeight: "700" }}>
-                            {highlightText(task.title, searchTerm)}
-                        </Typography>
-                        <Typography variant="caption" sx={{ lineHeight: 1.8, display: "block", color: "#635e5e" }}>
-                            {highlightText(task.description, searchTerm)}
-                        </Typography>
-                        <Box sx={{ display: "flex", mt: "2px" }}>
+                        {(provided) => (
                             <Box
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
                                 sx={{
-                                    bgcolor: getPriorityColor(task.priorty).bgcolor,
-                                    color: getPriorityColor(task.priorty).color,
-                                    paddingInline: "12px",
-                                    borderRadius: "4px",
-                                    fontWeight: "600"
-                                }}>
-                                {task.priorty}
+                                    bgcolor: "white",
+                                    borderRadius: "8px",
+                                    p: 2,
+                                    position: "relative",
+                                    boxShadow: "0px 1px 2px rgba(0,0,0,0.05)",
+                                    border: "1px solid #e8e8e8",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: "10px"
+                                }}
+                            >
+                                <Box sx={{ position: "absolute", top: 8, right: 8 }}>
+                                    <IconButton
+                                        size="small"
+                                        onClick={() => deleteTask(task.id)}
+                                        sx={{ color: "#f5222d" }}
+                                    >
+                                        <DeleteIcon fontSize="small" />
+                                    </IconButton>
+                                </Box>
+                                <Typography variant="body2" sx={{ fontWeight: "700" }}>
+                                    {highlightText(task.title, searchTerm)}
+                                </Typography>
+                                <Typography variant="caption" sx={{ lineHeight: 1.8, display: "block", color: "#635e5e" }}>
+                                    {highlightText(task.description, searchTerm)}
+                                </Typography>
+                                <Box sx={{ display: "flex", mt: "2px" }}>
+                                    <Box
+                                        sx={{
+                                            bgcolor: getPriorityColor(task.priorty).bgcolor,
+                                            color: getPriorityColor(task.priorty).color,
+                                            paddingInline: "12px",
+                                            borderRadius: "4px",
+                                            fontWeight: "600"
+                                        }}>
+                                        {task.priorty}
+                                    </Box>
+                                </Box>
                             </Box>
-                        </Box>
-                    </Box>
+                        )}
+                    </Draggable>
                 ))}
                 {visibleCount < tasks.length && (
                     <Box ref={ref} sx={{ display: 'flex', justifyContent: 'center', p: 1, mt: 1 }}>
