@@ -1,0 +1,32 @@
+{
+    "tasks": [
+        {
+            "id": "1",
+            "title": "API integration",
+            "description": "Connect frontend REST API endpoint",
+            "priorty": "HIGH",
+            "column": "backlog"
+        },
+        {
+            "id": "2",
+            "title": "Authentication flow",
+            "description": "Implement login, signup, and password reset screens",
+            "priorty": "HIGH",
+            "column": "in_progress"
+        },
+        {
+            "id": "3",
+            "title": "Dark mode support",
+            "description": "Add theme toggle and Css variable switching",
+            "priorty": "MEDIUM",
+            "column": "review"
+        },
+        {
+            "id": "4",
+            "title": "Design system tokens",
+            "description": "Set up palette, typography, and spacing scales",
+            "priorty": "HIGH",
+            "column": "done"
+        }
+    ]
+}
