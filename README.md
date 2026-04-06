@@ -8,6 +8,11 @@ A modern and interactive Kanban board built with **React**, **Redux Toolkit**, a
 
 👉 [https://task-board-kanban-mauve.vercel.app/](https://task-board-kanban-mauve.vercel.app/)
 
+> 💡 **Note for Live Demo:** > The tasks will fail to load on the live link because the backend runs on `json-server` locally.  
+> To see the application fully working with data,
+   <br /> please clone the project and run the mock server locally using:  
+> `npx json-server --watch db.json --port 4000`
+
 ---
 
 ## 📸 Screenshots
